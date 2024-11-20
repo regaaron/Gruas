@@ -1,0 +1,102 @@
+<!-- @if (isAuthenticated) { -->
+<div class="menu" (click)="toggleSidebar()">
+    <i class="fa-solid fa-bars" *ngIf="!isSidebarOpen"></i>
+    <i class="fa-solid fa-xmark" *ngIf="isSidebarOpen"></i>
+</div>
+
+<div class="barra-lateral" [ngClass]="{'max-barra-lateral': isSidebarOpen, 'mini-barra-lateral': isMiniSidebar}">
+    <div>
+        <div class="nombre-pagina" (click)="toggleMiniSidebar()">
+            <i id="cloud" class="fa-solid fa-bars"></i>
+            <span *ngIf="!isMiniSidebar">Gruas</span>
+        </div>
+    </div>
+
+    <nav class="navegacion">
+        <ul>
+            <li>
+                <a routerLink="Registrar-Conductor" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-car"></i>
+                  <span *ngIf="!isMiniSidebar">Registrar Conductor</span>
+                </a>
+            </li>
+            <li>
+                <a  routerLink="Registrar-Gruas" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-truck-pickup"></i>
+                  <span *ngIf="!isMiniSidebar">Registrar Gruas</span>
+                </a>
+            </li>
+            <li>
+                <a  routerLink="Clientes" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-users"></i>
+                  <span *ngIf="!isMiniSidebar">Clientes</span>
+                </a>
+            </li>
+            <li>
+                <a  routerLink="Viajes" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-plane"></i>
+                  <span *ngIf="!isMiniSidebar">Viajes</span>
+                </a>
+
+            </li>
+            <li>
+                <a  routerLink="Ventas" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-chart-line"></i>
+                  <span *ngIf="!isMiniSidebar">Ventas</span>
+                </a>
+
+            </li>
+            <li>
+                <a  routerLink="Mapa" (click)="toggleSidebar()">
+                    <i class="fa-solid fa-earth-americas"></i>
+                  <span *ngIf="!isMiniSidebar">Mapa</span>
+                </a>
+
+            </li>
+        
+                          
+        </ul>
+    </nav>
+
+    <div>
+        <div class="linea"></div>
+
+        <div class="modo-oscuro" (click)="toggleDarkMode()">
+            <div class="info">
+                <i class="fa-solid fa-moon"></i>
+                <span *ngIf="!isMiniSidebar">Dark Mode</span>
+            </div>
+            <div class="switch">
+                <div class="base">
+                    <div class="circulo" [ngClass]="{'prendido': isDarkMode}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usuario">
+            @if(isMiniSidebar){
+                <div>
+                    <a  class="btn btn-danger" (click)="LogOut()">
+                        <span >Salir</span>
+                     </a>
+                </div>
+            }
+            <img src="../../assets/logo.avif" alt="">
+            <div class="info-usuario">
+                <div class="nombre-email">
+                    <span class="nombre">Gruas</span>
+                </div>
+                <div>
+                    <a  routerLink="/login" class="btn btn-danger" (click)="LogOut()">
+                        <span >Salir</span>
+                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main [ngClass]="{'min-main': isMiniSidebar}">
+    <router-outlet></router-outlet>
+</main>
+
