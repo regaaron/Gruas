@@ -1,1 +1,77 @@
-<p>registrar-conductor works!</p>
+<div class="form-container">
+    <h2 class="text-center">Registrar Conductor</h2>
+    <form (ngSubmit)="onSubmit(driverForm)" #driverForm="ngForm" class="mt-2">
+  
+      <!-- Campos Nombre y Apellido -->
+      <div class="input-group mb-3">
+        <input 
+          type="text" 
+          id="nombre" 
+          name="nombre" 
+          class="form-control" 
+          placeholder="Nombre" 
+          aria-label="name" 
+          ngModel 
+          #nombre="ngModel" 
+          required>
+        <input 
+          type="text" 
+          id="apellido" 
+          name="apellido" 
+          class="form-control" 
+          placeholder="Apellido" 
+          aria-label="apellido" 
+          ngModel 
+          #apellido="ngModel" 
+          required>
+      </div>
+      <div *ngIf="showErrors && (nombre.invalid || apellido.invalid)" class="text-danger mb-2">
+        Nombre y apellido son obligatorios.
+      </div>
+  
+      <!-- Campo Dirección -->
+      <div class="mb-3">
+        <input 
+          type="text" 
+          id="direccion" 
+          class="form-control" 
+          name="direccion" 
+          ngModel 
+          placeholder="Dirección" />
+      </div>
+  
+      <!-- Campos Teléfono y Correo -->
+      <div class="input-group mb-3">
+        <input 
+          type="tel" 
+          name="telefono" 
+          id="telefono" 
+          class="form-control" 
+          placeholder="Teléfono" 
+          ngModel 
+          #telefono="ngModel" 
+          required>
+        <input 
+          type="email" 
+          name="email" 
+          id="email" 
+          class="form-control" 
+          placeholder="Correo electrónico" 
+          ngModel 
+          #email="ngModel" 
+          required>
+      </div>
+      <div *ngIf="showErrors && (telefono.invalid || email.invalid)" class="text-danger mb-2">
+        Teléfono y correo electrónico son obligatorios y deben ser válidos.
+      </div>
+  
+      <!-- Botón Enviar -->
+      <button 
+        type="submit" 
+        class="btn btn-success w-100" 
+        [disabled]="!driverForm.valid">
+        Registrar
+      </button>
+    </form>
+  </div>
+  

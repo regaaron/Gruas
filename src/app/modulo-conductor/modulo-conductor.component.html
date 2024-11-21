@@ -1,0 +1,26 @@
+<div class="container">
+    <h1>Modulo Conductores</h1>
+
+    <div class="modulo1">
+        <div class="Filtro">
+            <!-- Filtro --> 
+            <div class="radio-inputs">
+                <label class="radio">
+                    <input type="radio" name="radio" (click)="mostrarComponente('Registrar-Conductor')" checked>
+                    <span class="name">Registrar</span>
+                </label>
+
+                <label class="radio">
+                    <input type="radio" name="radio" (click)="mostrarComponente('Ver-Conductores')">
+                    <span class="name">Ver Conductores</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="componente">
+
+    <app-registrar-conductor *ngIf="componenteActual === 'Registrar-Conductor'"></app-registrar-conductor>
+    <app-ver-conductores *ngIf="componenteActual === 'Ver-Conductores'"></app-ver-conductores>
+</div>

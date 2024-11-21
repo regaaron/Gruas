@@ -7,6 +7,7 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { VentasComponent } from './ventas/ventas.component';
 import { ViajesComponent } from './viajes/viajes.component';
 import { MapaComponent } from './mapa/mapa.component';
+import { ModuloConductorComponent } from './modulo-conductor/modulo-conductor.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -15,14 +16,14 @@ export const routes: Routes = [
         path: 'menu',
         component: MenuComponent, 
         children: [
-          { path: '' ,component: RegistrarConductorComponent},
-          {path: 'Registrar-Conductor', component: RegistrarConductorComponent},
+          { path: '' ,component: ModuloConductorComponent},
+          {path: 'Modulo-Conductor', component: ModuloConductorComponent},
           {path:'Registrar-Gruas', component: RegistrarGruasComponent},
           {path:'Clientes', component:ClientesComponent },
           {path: 'Viajes', component: ViajesComponent},
           {path: 'Ventas', component: VentasComponent},
           {path: 'Mapa', component: MapaComponent},
-            { path: '', redirectTo: 'Registrar-Conductor', pathMatch: 'full' }
+            { path: '', redirectTo: 'Modulo-Conductor', pathMatch: 'full' }
         ]
     },
     { path: '**', pathMatch: 'full', redirectTo: 'login' }
