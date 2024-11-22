@@ -1,0 +1,24 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Listado de Grúas</h2>
+    <table class="table table-bordered  table-hover">
+      <thead class="">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Número de Serie</th>
+          <th scope="col">Placa</th>
+          <th scope="col">Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let grua of gruas">
+          <th scope="row">{{ grua.id }}</th>
+          <td>{{ grua.modelo }}</td>
+          <td>{{ grua.numeroDeSerie }}</td>
+          <td>{{ grua.placa }}</td>
+          <td>{{ grua.tipoDeGrua }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

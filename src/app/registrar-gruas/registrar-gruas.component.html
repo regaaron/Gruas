@@ -1,1 +1,59 @@
-<p>registrar-gruas works!</p>
+<div class="form-container">
+    <h2>Registrar Grúa</h2>
+    <form (ngSubmit)="registrarGrua()" #gruaForm="ngForm">
+      <div class="input-group">
+        <div>
+          <label for="modelo">Modelo:</label>
+          <input
+            class="form-control"
+            type="text"
+            id="modelo"
+            [(ngModel)]="modelo"
+            name="modelo"
+            placeholder="Ingrese el modelo de la grúa"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="placa">Placa:</label>
+          <input
+            class="form-control"
+            type="text"
+            id="placa"
+            [(ngModel)]="placa"
+            name="placa"
+            placeholder="Ingrese la placa"
+            required
+          />
+        </div>
+        
+      </div>
+      <div class="mb-3">
+        <label for="numeroDeSerie">Número de Serie:</label>
+        <input
+          class="form-control"
+          type="text"
+          id="numeroDeSerie"
+          [(ngModel)]="numeroDeSerie"
+          name="numeroDeSerie"
+          placeholder="Ingrese el número de serie"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="tipoDeGrua">Tipo de Grúa:</label>
+        <input
+          class="form-control"
+          type="text"
+          id="tipoDeGrua"
+          [(ngModel)]="tipoDeGrua"
+          name="tipoDeGrua"
+          placeholder="Ingrese el tipo de grúa"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-success w-100" [disabled]="!gruaForm.valid">Registrar Grúa</button>
+    </form>
+  </div>
+  

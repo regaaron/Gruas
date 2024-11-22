@@ -1,0 +1,26 @@
+<div class="container">
+    <h1>Modulo Gruas</h1>
+
+    <div class="modulo1">
+        <div class="Filtro">
+            <!-- Filtro --> 
+            <div class="radio-inputs">
+                <label class="radio">
+                    <input type="radio" name="radio" (click)="mostrarComponente('Registrar-Grua')" checked>
+                    <span class="name">Registrar</span>
+                </label>
+
+                <label class="radio">
+                    <input type="radio" name="radio" (click)="mostrarComponente('Ver-Gruas')">
+                    <span class="name">Ver Gruas</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="componente">
+
+    <app-registrar-gruas *ngIf="componenteActual === 'Registrar-Grua'"></app-registrar-gruas>
+    <app-ver-gruas *ngIf="componenteActual === 'Ver-Gruas'"></app-ver-gruas>
+</div>

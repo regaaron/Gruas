@@ -8,6 +8,7 @@ import { VentasComponent } from './ventas/ventas.component';
 import { ViajesComponent } from './viajes/viajes.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { ModuloConductorComponent } from './modulo-conductor/modulo-conductor.component';
+import { ModuloGruasComponent } from './modulo-gruas/modulo-gruas.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -18,7 +19,7 @@ export const routes: Routes = [
         children: [
           { path: '' ,component: ModuloConductorComponent},
           {path: 'Modulo-Conductor', component: ModuloConductorComponent},
-          {path:'Registrar-Gruas', component: RegistrarGruasComponent},
+          {path:'Modulo-Gruas', component: ModuloGruasComponent},
           {path:'Clientes', component:ClientesComponent },
           {path: 'Viajes', component: ViajesComponent},
           {path: 'Ventas', component: VentasComponent},
