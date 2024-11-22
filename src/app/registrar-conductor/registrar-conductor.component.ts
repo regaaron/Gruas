@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-registrar-conductor',
@@ -12,36 +15,51 @@ import Swal from 'sweetalert2';
 })
 export class RegistrarConductorComponent {
   showErrors: boolean = false; // Controla cuándo mostrar los mensajes de error
+  nombre: string = '';
+  apellido: string = '';
+  direccion: string = '';
+  telefono: string = '';
+  email: string = '';
 
-  onSubmit(form: any) {
-    if (form.valid) {
-      const driverData = form.value;
+  constructor(private http: HttpClient) { }
 
-      // Mostrar datos en consola
-      console.log('Datos enviados:', driverData);
-
-      // Mostrar alerta de éxito con SweetAlert
-      Swal.fire({
-        icon: 'success',
-        title: '¡Conductor registrado!',
-        text: 'Los datos del conductor se enviaron correctamente.',
-        confirmButtonText: 'Aceptar'
-      });
-
-      // Limpiar el formulario y restablecer el estado
-      form.resetForm(); // Limpia y elimina el estado de validación
-      this.showErrors = false; // Oculta los mensajes de error
-    } else {
-      // Mostrar mensajes de error
-      this.showErrors = true;
-
-      // Mostrar alerta de error con SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Error en el formulario',
-        text: 'Por favor, completa todos los campos obligatorios antes de enviar.',
-        confirmButtonText: 'Aceptar'
-      });
+  // Método de registro
+  registrar() {
+    // Validaciones del formulario
+    if (!this.nombre || !this.apellido || !this.direccion || !this.telefono || !this.email) {
+      Swal.fire('Error', 'Todos los campos son requeridos', 'error');
+      return;
     }
+
+    const data = {
+      nombre: this.nombre,
+      apellido: this.apellido,
+      direccion: this.direccion,
+      telefono: this.telefono,
+      email: this.email
+    };
+
+    // Realizar el POST al servidor para registrar al conductor
+    this.http.post('http://localhost:3000/Registrar-Conductor', data).subscribe(
+      (response: any) => {
+        Swal.fire('Éxito', 'Conductor registrado con éxito', 'success');
+        
+        // Limpiar los campos después de un registro exitoso
+        this.nombre = '';
+        this.apellido = '';
+        this.direccion = '';
+        this.telefono = '';
+        this.email = '';
+      },
+      (error) => {
+        if (error.status === 400 && error.error.message === 'El conductor ya existe') {
+          Swal.fire('Error', 'El conductor ya está registrado', 'error');
+        } else if (error.status === 400) {
+          Swal.fire('Error', 'Todos los campos son requeridos', 'error');
+        } else {
+          Swal.fire('Error', 'No se pudo registrar el conductor. Intente más tarde.', 'error');
+        }
+      }
+    );
   }
 }

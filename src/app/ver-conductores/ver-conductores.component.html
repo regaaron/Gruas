@@ -1,1 +1,28 @@
-<p>ver-conductores works!</p>
+<div class="container">
+    <h2>Lista de Conductores</h2>
+    <table class="table table-bordered  table-hover">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let conductor of conductores">
+          <th scope="row">{{ conductor.id }}</th>
+          <td>{{ conductor.nombre }}</td>
+          <td>{{ conductor.apellido }}</td>
+          <td>{{ conductor.direccion }}</td>
+          <td>{{ conductor.telefono }}</td>
+          <td>{{ conductor.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  
