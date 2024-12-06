@@ -1,0 +1,23 @@
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .card {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* Resaltar tarjeta al presionar un marcador */
+  .card.highlight {
+    border: 3px solid red; /* Borde azul para resaltar */
+    box-shadow: 0px 4px 15px rgba(224, 24, 24, 0.6); /* Sombra azul */
+    transform: scale(1.05); /* Agrandar ligeramente */
+  }
+  
