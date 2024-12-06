@@ -1,33 +1,32 @@
-<google-map 
+<google-map
   [center]="center"
   [zoom]="zoom"
   height="500"
-  width="1000">
-
-  <!-- Marcadores dinámicos -->
-  <map-marker 
+  width="1000"
+>
+  <map-marker
     *ngFor="let conductor of ubicaciones; let i = index"
     [position]="{ lat: conductor.ubicacion.latitud, lng: conductor.ubicacion.longitud }"
     [icon]="icon"
     [label]="conductor.mostrarLabel ? conductor.nombre : ''"
-    (mapClick)="toggleLabel(i)">
+    (mapClick)="toggleLabel(i)"
+  >
   </map-marker>
-
 </google-map>
 
 <div #cardContainer class="container mt-5">
   <h2 class="mb-4">Ubicaciones de los Conductores</h2>
-
   <div *ngIf="ubicaciones.length === 0" class="alert alert-info">
     Cargando ubicaciones...
   </div>
-
   <div *ngIf="ubicaciones.length > 0" class="row">
     <div *ngFor="let conductor of ubicaciones; let i = index"  class="col-md-4 mb-3">
       <div [id]="'card-' + i" class="card shadow-sm">
         <div class="card-body">
-          <h5 class="card-title">{{ conductor.nombre }}</h5>
+          <h5 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h5>
           <p class="card-text">
+            Teléfono: {{ conductor.telefono }}<br />
+            Email: {{ conductor.email }}<br />
             Latitud: {{ conductor.ubicacion.latitud }}<br />
             Longitud: {{ conductor.ubicacion.longitud }}
           </p>
