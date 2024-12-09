@@ -1,1 +1,18 @@
-<p>viajes works!</p>
+<div id="map" style="height: 500px; width: 100%;"></div>
+
+<div class="info-card" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px;">
+  <h3>Información del Viaje</h3>
+  <p>
+    <strong>Origen:</strong>
+    {{ origenDireccion }}
+  </p>
+  <p>
+    <strong>Destino:</strong>
+    {{ destinoDireccion }}
+  </p>
+  <p>
+    <strong>Distancia:</strong>
+    {{ distancia }}
+  </p>
+  <button (click)="resetViaje()" class="btn btn-primary" style="margin-top: 10px;">Reiniciar</button>
+</div>
