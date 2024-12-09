@@ -1,4 +1,52 @@
-<div class="container">
-
-    <a [routerLink]="['/menu/']" class="btn btn-success">Menu</a>
-</div>
+<div class="bg-dark shadow-lg m-5" style="opacity: 0.85 !important; margin-top: 6% !important;">
+    <h1 id="namePage" class="text-center mt-5">Sign In</h1>
+  
+    <!-- Aquí usamos ngSubmit -->
+    <form class="m-5" (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="form-outline form-floating mb-4">
+        <input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          id="form2Example1"
+          class="text-white form-control bg-transparent"
+          placeholder="Username"
+          required
+          #usernameInput="ngModel"
+        />
+        <label class="form-label text-white bg-transparent" for="form2Example1">Username</label>
+        <!-- Mostrar error si el campo está vacío -->
+        <div *ngIf="usernameInput.invalid && usernameInput.touched" class="text-danger">
+          El nombre de usuario es obligatorio.
+        </div>
+      </div>
+  
+      <div class="form-outline bg-transparent form-floating mb-4">
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          id="form2Example2"
+          class="text-white form-control bg-transparent"
+          placeholder="Password"
+          required
+          #passwordInput="ngModel"
+        />
+        <label class="form-label text-white bg-transparent" for="form2Example2">Password</label>
+      </div>
+  
+      <!-- Mostrar mensajes de error generales -->
+      <div *ngIf="errorMessage" class="text-danger mb-3">{{ errorMessage }}</div>
+  
+      <div class="text-center mb-4">
+        <button
+          type="submit"
+          class="btn btn-primary text-white mb-4 fs-5"
+          [disabled]="loginForm.invalid"
+        >
+          Sign In
+        </button>
+      </div>
+    </form>
+  </div>
+  
