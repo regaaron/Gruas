@@ -32,6 +32,9 @@ export class MapaComponent implements OnInit {
     mostrarLabel: boolean;
   }[] = [];
 
+  private directionsService = new google.maps.DirectionsService();
+  private directionsRenderer!: google.maps.DirectionsRenderer;//agregado
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -39,6 +42,11 @@ export class MapaComponent implements OnInit {
     setInterval(() => {
       this.getUbicaciones();
     }, 30000);
+  }
+
+  ngAfterViewInit() {//agregado
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsRenderer.setMap((window as any).googleMap);
   }
 
   getUbicaciones(): void {
@@ -74,5 +82,34 @@ export class MapaComponent implements OnInit {
   private removeAllHighlights(): void {
     const tarjetas = this.cardContainer.nativeElement.querySelectorAll('.card');
     tarjetas.forEach((tarjeta: HTMLElement) => tarjeta.classList.remove('highlight'));
+  }
+
+  // Nueva función para trazar la ruta
+  traceRoute(origin: google.maps.LatLngLiteral, destination: google.maps.LatLngLiteral): void {
+    const request: google.maps.DirectionsRequest = {
+      origin,
+      destination,
+      travelMode: google.maps.TravelMode.DRIVING, // Puedes cambiar a WALKING, BICYCLING, etc.
+    };
+
+    this.directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK && result) {
+        this.directionsRenderer.setDirections(result);
+      } else {
+        console.error('No se pudo calcular la ruta:', status);
+      }
+    });
+  }
+
+  seleccionado: google.maps.LatLngLiteral | null = null;
+
+  seleccionarUbicacion(event: google.maps.MapMouseEvent): void {
+    if (event.latLng) {
+      this.seleccionado = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      };
+      console.log('Ubicación seleccionada:', this.seleccionado);
+    }
   }
 }

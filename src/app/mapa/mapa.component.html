@@ -3,6 +3,7 @@
   [zoom]="zoom"
   height="500"
   width="1000"
+  (mapClick)="seleccionarUbicacion($event)"
 >
   <map-marker
     *ngFor="let conductor of ubicaciones; let i = index"
@@ -20,7 +21,7 @@
     Cargando ubicaciones...
   </div>
   <div *ngIf="ubicaciones.length > 0" class="row">
-    <div *ngFor="let conductor of ubicaciones; let i = index"  class="col-md-4 mb-3">
+    <div *ngFor="let conductor of ubicaciones; let i = index" class="col-md-4 mb-3">
       <div [id]="'card-' + i" class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h5>
@@ -30,6 +31,15 @@
             Latitud: {{ conductor.ubicacion.latitud }}<br />
             Longitud: {{ conductor.ubicacion.longitud }}
           </p>
+          <button
+            class="btn btn-primary"
+            (click)="traceRoute(
+              center,
+              { lat: conductor.ubicacion.latitud, lng: conductor.ubicacion.longitud }
+            )"
+          >
+            Trazar Ruta
+          </button>
         </div>
       </div>
     </div>
