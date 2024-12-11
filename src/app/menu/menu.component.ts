@@ -22,10 +22,6 @@ export class MenuComponent {
     
   }
   
-  LogOut(){
-
-
-  }
 
   isSidebarOpen = false;
   isMiniSidebar = false;
@@ -46,5 +42,10 @@ export class MenuComponent {
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     document.body.classList.toggle('dark-mode', this.isDarkMode);
+  }
+
+  logout(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']); // Redirigir al login
   }
 }

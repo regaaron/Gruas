@@ -12,25 +12,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
-  constructor(private router: Router,private http: HttpClient) {
-  }
   username: string = '';
-  password: string = ''; // Solo para captura, no lo validamos ahora
+  password: string = '';
   errorMessage: string = '';
 
-  login() {
-    if (!this.username) {
-      this.errorMessage = 'El nombre de usuario es obligatorio';
-      return;
-    }
-    console.log(this.username)
-    this.http.post('http://localhost:3000/login', { username: this.username })
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(): void {
+    this.http.post('http://localhost:3000/login', { username: this.username, password: this.password })
       .subscribe({
         next: (response: any) => {
           console.log('Inicio de sesión exitoso:', response);
-          // Redirigir al usuario a otra página después del inicio de sesión
-          this.router.navigate(['/menu/']);
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+          this.router.navigate(['/menu']); // Redirigir a la página principal
         },
         error: (error) => {
           console.error('Error durante el inicio de sesión:', error);
