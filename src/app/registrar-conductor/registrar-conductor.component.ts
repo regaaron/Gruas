@@ -20,14 +20,22 @@ export class RegistrarConductorComponent {
   direccion: string = '';
   telefono: string = '';
   email: string = '';
+  password: string = '';
+  confirmPassword: string = '';
 
   constructor(private http: HttpClient) { }
 
   // Método de registro
   registrar() {
+
     // Validaciones del formulario
-    if (!this.nombre || !this.apellido || !this.direccion || !this.telefono || !this.email) {
+    if (!this.nombre || !this.apellido || !this.direccion || !this.telefono || !this.email || !this.password) {
       Swal.fire('Error', 'Todos los campos son requeridos', 'error');
+      return;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
       return;
     }
 
@@ -36,7 +44,8 @@ export class RegistrarConductorComponent {
       apellido: this.apellido,
       direccion: this.direccion,
       telefono: this.telefono,
-      email: this.email
+      email: this.email,
+      password: this.password
     };
 
     // Realizar el POST al servidor para registrar al conductor
@@ -49,7 +58,9 @@ export class RegistrarConductorComponent {
         this.apellido = '';
         this.direccion = '';
         this.telefono = '';
-        this.email = '';
+        this.email = ''
+        this.password = '';
+        this.confirmPassword = '';
       },
       (error) => {
         if (error.status === 400 && error.error.message === 'El conductor ya existe') {

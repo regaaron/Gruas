@@ -1,13 +1,17 @@
-import { Component, AfterViewInit, NgZone} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, AfterViewInit, NgZone } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-viajes',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './viajes.component.html',
   styleUrl: './viajes.component.css'
 })
 export class ViajesComponent {
+  viajes: any[] = [];
   map!: google.maps.Map;
   origen!: google.maps.LatLng | null;
   destino!: google.maps.LatLng | null;
@@ -15,20 +19,33 @@ export class ViajesComponent {
   origenDireccion: string = 'No seleccionado';
   destinoDireccion: string = 'No seleccionado';
   markers: google.maps.Marker[] = [];
+  directionsService!: google.maps.DirectionsService;
+  directionsRenderer!: google.maps.DirectionsRenderer;
+  selectedViaje: any | null = null; // Viaje seleccionado actualmente
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone, private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.initMap();
+    this.getViajes();
+  }
+
+  ngAfterViewInit(): void {
     this.initMap();
   }
 
   initMap(): void {
     const mapOptions: google.maps.MapOptions = {
-      center: { lat: 19.432608, lng: -99.133209 },
+      center: { lat: 21.88234, lng: -102.28259 }, // Coordenadas de Aguascalientes
       zoom: 14,
     };
 
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
+
+    // Inicializar servicios de direcciones
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsRenderer.setMap(this.map);
 
     this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
       const latlng = event.latLng;
@@ -51,7 +68,7 @@ export class ViajesComponent {
         this.convertirACalleYNumero(latlng, (address) => {
           this.destinoDireccion = address;
           this.addMarker(latlng, 'Destino', false);
-          this.calcularDistancia();
+          this.calcularRuta();
         });
       }
     });
@@ -78,30 +95,64 @@ export class ViajesComponent {
     this.markers.push(marker);
   }
 
-  calcularDistancia(): void {
+  calcularRuta(): void {
     if (this.origen && this.destino) {
-      const service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix(
-        {
-          origins: [this.origen],
-          destinations: [this.destino],
-          travelMode: google.maps.TravelMode.DRIVING,
-        },
-        (response, status) => {
-          if (status === google.maps.DistanceMatrixStatus.OK && response?.rows[0].elements[0]) {
-            const distanceText = response.rows[0].elements[0].distance.text;
-            this.ngZone.run(() => {
-              this.distancia = distanceText; // Asegura que Angular detecte el cambio
-            });
-          } else {
-            console.error('Error al calcular distancia:', status);
-            this.ngZone.run(() => {
-              this.distancia = 'Error al calcular'; // Actualiza el texto de error
-            });
-          }
+      const request: google.maps.DirectionsRequest = {
+        origin: this.origen,
+        destination: this.destino,
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+
+      this.directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK && result) {
+          this.directionsRenderer.setDirections(result);
+
+          // Obtener distancia del resultado
+          const route = result.routes[0];
+          const leg = route.legs[0];
+          this.ngZone.run(() => {
+            this.distancia = leg.distance?.text || 'No disponible';
+            console.log(`Distancia calculada: ${this.distancia}`);
+          });
+        } else {
+          console.error('Error al calcular la ruta:', status);
+          this.ngZone.run(() => {
+            this.distancia = 'Error al calcular';
+          });
         }
-      );
+      });
     }
+  }
+
+  getViajes(): void {
+    this.http.get('http://localhost:3000/ver-viajes').subscribe(
+      (response: any) => {
+        this.viajes = response;
+      },
+      (error: any) => {
+        Swal.fire('Error', "No se pudo cargar los viajes", error);
+        console.log(error);
+      }
+    );
+  }
+
+  onSelectViaje(viaje: any): void {
+    this.selectedViaje = viaje;
+
+    // Eliminar los marcadores actuales
+    this.markers.forEach(marker => marker.setMap(null));
+    this.markers = [];
+
+    // Establecer origen y destino con las coordenadas de los viajes seleccionados
+    this.origen = new google.maps.LatLng(viaje.viaje.origen.latitud, viaje.viaje.origen.longitud);
+    this.destino = new google.maps.LatLng(viaje.viaje.destino.latitud, viaje.viaje.destino.longitud);
+
+    // Actualizar las direcciones
+    this.convertirACalleYNumero(this.origen, address => this.origenDireccion = address);
+    this.convertirACalleYNumero(this.destino, address => this.destinoDireccion = address);
+
+    // Calcular la ruta
+    this.calcularRuta();
   }
 
   resetViaje(): void {
@@ -111,7 +162,10 @@ export class ViajesComponent {
     this.destinoDireccion = 'No seleccionado';
     this.distancia = 'No calculada';
 
-    this.markers.forEach((marker) => marker.setMap(null));
+    this.markers.forEach(marker => marker.setMap(null));
     this.markers = [];
+
+    // Limpiar la ruta del mapa
+    this.directionsRenderer.setDirections({ routes: [], request: { origin: '', destination: '', travelMode: google.maps.TravelMode.DRIVING } });
   }
 }
