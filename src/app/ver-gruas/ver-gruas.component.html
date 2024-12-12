@@ -8,6 +8,7 @@
           <th scope="col">Número de Serie</th>
           <th scope="col">Placa</th>
           <th scope="col">Tipo</th>
+          <th scope="col">Editar</th>
         </tr>
       </thead>
       <tbody>
@@ -17,8 +18,10 @@
           <td>{{ grua.numeroDeSerie }}</td>
           <td>{{ grua.placa }}</td>
           <td>{{ grua.tipoDeGrua }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="abrirModal(grua)">Editar</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-  
