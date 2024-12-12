@@ -1,0 +1,14 @@
+table {
+    margin-top: 20px;
+  }
+  
+  thead th {
+    /* background-color: #343a40; */
+    /* color: white; */
+    text-align: center;
+  }
+  
+  tbody td {
+    text-align: center;
+  }
+  

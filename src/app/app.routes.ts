@@ -10,6 +10,8 @@ import { MapaComponent } from './mapa/mapa.component';
 import { ModuloConductorComponent } from './modulo-conductor/modulo-conductor.component';
 import { ModuloGruasComponent } from './modulo-gruas/modulo-gruas.component';
 import { authGuard } from './auth.guard';
+import { ClienteTestComponent } from './cliente-test/cliente-test.component';
+import { EncripTestComponent } from './encrip-test/encrip-test.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -25,6 +27,8 @@ export const routes: Routes = [
           {path: 'Viajes', component: ViajesComponent},
           {path: 'Ventas', component: VentasComponent},
           {path: 'Mapa', component: MapaComponent},
+          {path: 'test', component: ClienteTestComponent},
+          {path: 'test2', component: EncripTestComponent},
             { path: '', redirectTo: 'Modulo-Conductor', pathMatch: 'full' }
         ]
     },
