@@ -3,13 +3,21 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router); // Inyecta el servicio Router
-  const usuario = localStorage.getItem('usuario'); // Verifica si el usuario está autenticado
+  const router = inject(Router);
 
-  if (usuario) {
-    return true; // Permite el acceso si el usuario está autenticado
-  } else {
-    router.navigate(['/login']); // Redirige al login si no está autenticado
-    return false;
+  try {
+    // Verifica si localStorage está disponible
+    if (typeof window !== 'undefined' && localStorage) {
+      const usuario = localStorage.getItem('usuario');
+      if (usuario) {
+        return true; // Permite el acceso si el usuario está autenticado
+      }
+    }
+  } catch (error) {
+    console.error('Error accediendo a localStorage:', error);
   }
+
+  // Redirige al login si no está autenticado
+  router.navigate(['/login']);
+  return false;
 };

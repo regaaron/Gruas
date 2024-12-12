@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink,FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -28,6 +29,7 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Error durante el inicio de sesión:', error);
+          Swal.fire('Error','Contraseña o usuario incorrecto','error');
           this.errorMessage = error.error?.error || 'Ocurrió un error';
         }
       });
