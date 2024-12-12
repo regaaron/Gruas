@@ -9,13 +9,14 @@ import { ViajesComponent } from './viajes/viajes.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { ModuloConductorComponent } from './modulo-conductor/modulo-conductor.component';
 import { ModuloGruasComponent } from './modulo-gruas/modulo-gruas.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
    
     {
         path: 'menu',
-        component: MenuComponent, 
+        component: MenuComponent, canActivate: [authGuard], 
         children: [
           { path: '' ,component: ModuloConductorComponent},
           {path: 'Modulo-Conductor', component: ModuloConductorComponent},

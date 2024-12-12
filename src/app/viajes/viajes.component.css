@@ -17,4 +17,8 @@
   .info-card button {
     margin-top: 10px;
   }
+
+  .card:hover{
+    cursor: pointer;
+  }
   
