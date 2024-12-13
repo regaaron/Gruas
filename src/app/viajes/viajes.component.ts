@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class ViajesComponent {
   viajes: any[] = [];
+  clientes: Map<number, any> = new Map(); // Map para almacenar clientes por ID
+  conductores: Map<number, any> = new Map(); // Map para almacenar conductores por ID
   map!: google.maps.Map;
   origen!: google.maps.LatLng | null;
   destino!: google.maps.LatLng | null;
@@ -27,7 +29,10 @@ export class ViajesComponent {
 
   ngOnInit(): void {
     this.initMap();
-    this.getViajes();
+    this.loadData();
+    setInterval(() => {
+      this.loadData();
+    }, 30000); // Actualización cada 30 segundos
   }
 
   ngAfterViewInit(): void {
@@ -90,7 +95,6 @@ export class ViajesComponent {
     const marker = new google.maps.Marker({
       position: latlng,
       map: this.map,
-      label: label,
     });
     this.markers.push(marker);
   }
@@ -124,35 +128,68 @@ export class ViajesComponent {
     }
   }
 
-  getViajes(): void {
-    this.http.get('http://localhost:3000/ver-viajes').subscribe(
-      (response: any) => {
-        this.viajes = response;
+  loadData(): void {
+    this.http.get<any[]>('http://localhost:3000/ver-viajes').subscribe(
+      (viajes) => {
+        this.viajes = viajes;
+        this.loadClientes();
+        this.loadConductores();
       },
-      (error: any) => {
-        Swal.fire('Error', "No se pudo cargar los viajes", error);
-        console.log(error);
+      (error) => {
+        Swal.fire('Error', 'No se pudo cargar los viajes', error);
+        console.error(error);
       }
     );
   }
+  
+
+  loadClientes(): void {
+    this.http.get<any[]>('http://localhost:3000/ver-clientes').subscribe(
+      (clientes) => {
+        clientes.forEach(cliente => this.clientes.set(cliente.id, cliente));
+      },
+      (error: any) => {
+        Swal.fire('Error', 'No se pudo cargar los clientes', error);
+        console.error(error);
+      }
+    );
+  }
+  
+  loadConductores(): void {
+    this.http.get<any[]>('http://localhost:3000/ver-conductores').subscribe(
+      (conductores) => {
+        conductores.forEach(conductor => this.conductores.set(conductor.id, conductor));
+      },
+      (error: any) => {
+        Swal.fire('Error', 'No se pudo cargar los conductores', error);
+        console.error(error);
+      }
+    );
+  }
+  
 
   onSelectViaje(viaje: any): void {
     this.selectedViaje = viaje;
 
-    // Eliminar los marcadores actuales
-    this.markers.forEach(marker => marker.setMap(null));
-    this.markers = [];
+    // Obtener detalles del cliente y conductor
+    const cliente = this.clientes.get(viaje.id_cliente);
+    const conductor = this.conductores.get(viaje.id_conductor);
 
-    // Establecer origen y destino con las coordenadas de los viajes seleccionados
-    this.origen = new google.maps.LatLng(viaje.viaje.origen.latitud, viaje.viaje.origen.longitud);
-    this.destino = new google.maps.LatLng(viaje.viaje.destino.latitud, viaje.viaje.destino.longitud);
+    // Actualizar las direcciones y marcadores
+    this.origen = new google.maps.LatLng(viaje.latitud_cliente, viaje.longitud_cliente);
+    this.destino = new google.maps.LatLng(viaje.latitud_conductor, viaje.longitud_conductor);
 
-    // Actualizar las direcciones
     this.convertirACalleYNumero(this.origen, address => this.origenDireccion = address);
     this.convertirACalleYNumero(this.destino, address => this.destinoDireccion = address);
 
-    // Calcular la ruta
+    this.resetMarkers();
+   
     this.calcularRuta();
+  }
+
+  resetMarkers(): void {
+    this.markers.forEach(marker => marker.setMap(null));
+    this.markers = [];
   }
 
   resetViaje(): void {
@@ -161,11 +198,50 @@ export class ViajesComponent {
     this.origenDireccion = 'No seleccionado';
     this.destinoDireccion = 'No seleccionado';
     this.distancia = 'No calculada';
+    this.selectedViaje = null;
 
-    this.markers.forEach(marker => marker.setMap(null));
-    this.markers = [];
+    this.resetMarkers();
 
     // Limpiar la ruta del mapa
     this.directionsRenderer.setDirections({ routes: [], request: { origin: '', destination: '', travelMode: google.maps.TravelMode.DRIVING } });
   }
+
+  mostrarInfoCliente(idCliente: number): void {
+    const cliente = this.clientes.get(idCliente);
+    if (cliente) {
+      Swal.fire({
+        title: `${cliente.nombre} ${cliente.apellido}`,
+        html: `
+          <p><strong>Dirección:</strong> ${cliente.direccion || 'No disponible'}</p>
+          <p><strong>Teléfono:</strong> ${cliente.telefono || 'No disponible'}</p>
+          <p><strong>Email:</strong> ${cliente.email || 'No disponible'}</p>
+
+        `,
+        icon: 'info',
+        confirmButtonText: 'Cerrar'
+      });
+    } else {
+      Swal.fire('Error', 'Cliente no encontrado', 'error');
+    }
+  }
+  
+  mostrarInfoConductor(idConductor: number): void {
+    const conductor = this.conductores.get(idConductor);
+    if (conductor) {
+      Swal.fire({
+        title: `${conductor.nombre} ${conductor.apellido}`,
+        html: `
+          <p><strong>Dirección:</strong> ${conductor.direccion || 'No disponible'}</p>
+          <p><strong>Teléfono:</strong> ${conductor.telefono || 'No disponible'}</p>
+          <p><strong>Email:</strong> ${conductor.email || 'No disponible'}</p>
+         
+        `,
+        icon: 'info',
+        confirmButtonText: 'Cerrar'
+      });
+    } else {
+      Swal.fire('Error', 'Conductor no encontrado', 'error');
+    }
+  }
+  
 }

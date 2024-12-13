@@ -1,34 +1,65 @@
 <div class="container mt-4">
   <div class="row">
-    <div class="col-md-4 mb-4" *ngFor="let viaje of viajes" (click)="onSelectViaje(viaje)">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ viaje.conductor.nombre }} {{ viaje.conductor.apellido }}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ viaje.usuario.nombre }} {{ viaje.usuario.apellido }}</h6>
-          <p class="card-text">
-            <strong>Fecha:</strong> {{ viaje.viaje.fecha | date:'short' }} <br>
-            <strong>Distancia:</strong> {{ viaje.viaje.distancia }} <br>
-            <strong>Duración:</strong> {{ viaje.viaje.duracion }}
-          </p>
-        </div>
-      </div>
+    <!-- Lista de Viajes -->
+    <div class="lista col-md-4">
+      <h4>Lista de Viajes</h4>
+      <ul class="list-group">
+        <li 
+          *ngFor="let viaje of viajes" 
+          class="list-group-item d-flex justify-content-between align-items-center"
+          [class.active]="selectedViaje === viaje"
+          (click)="onSelectViaje(viaje)">
+          Viaje #{{ viaje.id_viaje }}
+          <span class="badge bg-success rounded-pill">
+            {{ (clientes.get(viaje.id_cliente)?.nombre || 'N/A') + '-' + (conductores.get(viaje.id_conductor)?.nombre || 'N/A') }}
+          </span>
+        </li>
+      </ul>
     </div>
-  </div>
 
-  <!-- Mapa y "Información del Viaje" -->
-  <div id="map" style="height: 500px; width: 100%;"></div>
+    <!-- Mapa e Información del Viaje -->
+    <div class="col-md-8">
+      <div id="map" style="height: 400px; width: 100%;" class="border rounded shadow-sm"></div>
+      
+      <!-- Información del Viaje -->
+      <div class="mt-3 p-3 bg-light border rounded shadow-sm">
+        <h5>Información del Viaje</h5>
+        <p><strong>Origen:</strong> {{ origenDireccion }}</p>
+        <p><strong>Destino:</strong> {{ destinoDireccion }}</p>
+        <p><strong>Distancia:</strong> {{ distancia }}</p>
+      </div>
+      
+      <!-- Detalles del Viaje -->
+      <div *ngIf="selectedViaje" class="mt-3 p-3 bg-white border rounded shadow-sm">
+        <h5>Detalles del Viaje</h5>
+        <p>
+          <strong>Cliente:</strong> 
+          {{ clientes.get(selectedViaje.id_cliente)?.nombre || 'No disponible' }}
+          <button 
+            *ngIf="clientes.get(selectedViaje.id_cliente)" 
+            class="btn btn-outline-info btn-sm rounded-circle ms-2" 
+            (click)="mostrarInfoCliente(selectedViaje.id_cliente)">
+            <i class="fas fa-question"></i>
+          </button>
+        </p>
+        <p>
+          <strong>Conductor:</strong> 
+          {{ conductores.get(selectedViaje.id_conductor)?.nombre || 'No disponible' }}
+          <button 
+            *ngIf="conductores.get(selectedViaje.id_conductor)" 
+            class="btn btn-outline-info btn-sm rounded-circle ms-2" 
+            (click)="mostrarInfoConductor(selectedViaje.id_conductor)">
+            <i class="fas fa-question"></i>
+          </button>
+        </p>
+        <p><strong>Tipo de Grúa:</strong> {{ selectedViaje.tipo_grua || 'No disponible' }}</p>
+        <p><strong>Modelo de Auto:</strong> {{ selectedViaje.modelo_del_auto || 'No disponible' }}</p>
+        <p><strong>Placas:</strong> {{ selectedViaje.placas_cliente || 'No disponible' }}</p>
+        <p><strong>Comentario:</strong> {{ selectedViaje.comentarios || 'sin comentario' }}</p>
+      </div>
 
-  <div *ngIf="selectedViaje" class="info-card mt-4 p-3 border rounded">
-    <h3>Información del Viaje</h3>
-    <p>
-      <strong>Origen:</strong> {{ origenDireccion }}
-    </p>
-    <p>
-      <strong>Destino:</strong> {{ destinoDireccion }}
-    </p>
-    <p>
-      <strong>Distancia:</strong> {{ distancia }}
-    </p>
-    <button (click)="resetViaje()" class="btn btn-primary mt-2">Reiniciar</button>
+      <!-- Botón de Reinicio -->
+      <button class="btn btn-danger mt-3 w-100" (click)="resetViaje()" *ngIf="selectedViaje">Reiniciar Viaje</button>
+    </div>
   </div>
 </div>
