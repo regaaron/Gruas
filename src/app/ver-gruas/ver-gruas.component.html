@@ -1,6 +1,6 @@
-<div class="container mt-4">
+<div class="container mt-4 table-responsive">
     <h2 class="text-center mb-4">Listado de Grúas</h2>
-    <table class="table table-bordered  table-hover">
+    <table class="table table-bordered  table-hover ">
       <thead class="">
         <tr>
           <th scope="col">ID</th>
@@ -13,11 +13,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let grua of gruas">
-          <th scope="row">{{ grua.id }}</th>
+          <th scope="row">{{ grua.id_grua }}</th>
           <td>{{ grua.modelo }}</td>
-          <td>{{ grua.numeroDeSerie }}</td>
+          <td>{{ grua.numero_serie }}</td>
           <td>{{ grua.placa }}</td>
-          <td>{{ grua.tipoDeGrua }}</td>
+          <td>{{ grua.tipo_grua }}</td>
           <td>
             <button class="btn btn-primary" (click)="abrirModal(grua)">Editar</button>
           </td>

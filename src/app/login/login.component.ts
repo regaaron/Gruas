@@ -13,24 +13,24 @@ import Swal from 'sweetalert2';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   errorMessage: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(): void {
-    this.http.post('http://localhost:3000/login', { username: this.username, password: this.password })
+    this.http.post('http://localhost:3000/api/clientes/login/', { email: this.email, password: this.password })
       .subscribe({
         next: (response: any) => {
           console.log('Inicio de sesión exitoso:', response);
-          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+          localStorage.setItem('usuario', JSON.stringify(response.usuario)); 
           this.router.navigate(['/menu']); // Redirigir a la página principal
         },
         error: (error) => {
           console.error('Error durante el inicio de sesión:', error);
-          Swal.fire('Error','Contraseña o usuario incorrecto','error');
           this.errorMessage = error.error?.error || 'Ocurrió un error';
+          Swal.fire('Error', `${this.errorMessage}`, 'error');
         }
       });
   }

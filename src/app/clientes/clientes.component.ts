@@ -21,7 +21,7 @@ export class ClientesComponent {
 
   // Método para obtener los clientes desde el backend
   getClientes(): void {
-    this.http.get('http://localhost:3000/ver-clientes/').subscribe(
+    this.http.get('http://localhost:3000/api/clientes/usuarios/').subscribe(
       (response: any) => {
         this.clientes = response; // Asigna los datos a la variable clientes
       },

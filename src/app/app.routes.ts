@@ -25,10 +25,7 @@ export const routes: Routes = [
           {path:'Modulo-Gruas', component: ModuloGruasComponent},
           {path:'Clientes', component:ClientesComponent },
           {path: 'Viajes', component: ViajesComponent},
-          {path: 'Ventas', component: VentasComponent},
           {path: 'Mapa', component: MapaComponent},
-          {path: 'test', component: ClienteTestComponent},
-          {path: 'test2', component: EncripTestComponent},
             { path: '', redirectTo: 'Modulo-Conductor', pathMatch: 'full' }
         ]
     },

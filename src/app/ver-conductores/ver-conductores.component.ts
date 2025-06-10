@@ -24,9 +24,10 @@ export class VerConductoresComponent {
 
   // Método para obtener los conductores desde el backend
   getConductores(): void {
-    this.http.get('http://localhost:3000/ver-conductores').subscribe(
+    this.http.get('http://localhost:3000/api/conductores/ver-conductores/').subscribe(
       (response: any) => {
         this.conductores = response;
+        console.log(this.conductores);
       },
       (error) => {
         Swal.fire('Error', 'No se pudieron cargar los conductores', 'error');
@@ -55,12 +56,16 @@ export class VerConductoresComponent {
           <label for="swal-telefono">Teléfono:</label>
           <input id="swal-telefono" class="swal2-input" value="${this.conductorSeleccionado.telefono}">
           <br>
+
           <label for="swal-email">Email:</label>
           <input id="swal-email" class="swal2-input" type="email" value="${this.conductorSeleccionado.email}">
+          <br>
+
+          <label for="swal-password">password:</label>
+          <input id="swal-password" class="swal2-input" type="password"  value="${this.conductorSeleccionado.password}">
+          <br>
           
-          <label for="swal-password">Contraseña:</label>
-          <input id="swal-password" class="swal2-input" type="password" value="${this.conductorSeleccionado.password}">
-        </div>
+          </div>
       `,
       showCancelButton: true,
       confirmButtonText: 'Guardar',
@@ -88,7 +93,7 @@ export class VerConductoresComponent {
   // Método para guardar los cambios
   guardarCambios(): void {
     this.http
-      .put(`http://localhost:3000/actualizar-conductor/${this.conductorSeleccionado.id}`, this.conductorSeleccionado)
+      .put(`http://localhost:3000/api/conductores/actualizar-conductor/${this.conductorSeleccionado.id_usuario}`, this.conductorSeleccionado)
       .subscribe(
         () => {
           Swal.fire('Éxito', 'Conductor actualizado correctamente', 'success');

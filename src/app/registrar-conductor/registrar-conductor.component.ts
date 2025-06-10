@@ -49,7 +49,7 @@ export class RegistrarConductorComponent {
     };
 
     // Realizar el POST al servidor para registrar al conductor
-    this.http.post('http://localhost:3000/Registrar-Conductor', data).subscribe(
+    this.http.post('http://localhost:3000/api/conductores/Registrar-Conductor', data).subscribe(
       (response: any) => {
         Swal.fire('Éxito', 'Conductor registrado con éxito', 'success');
         

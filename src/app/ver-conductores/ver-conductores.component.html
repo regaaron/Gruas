@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container table-responsive">
     <h2>Lista de Conductores</h2>
-    <table class="table table-bordered  table-hover">
+    <table class="table table-bordered  table-hover ">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let conductor of conductores">
-          <th scope="row">{{ conductor.id }}</th>
+          <th scope="row">{{ conductor.id_usuario }}</th>
           <td>{{ conductor.nombre }}</td>
           <td>{{ conductor.apellido }}</td>
           <td>{{ conductor.direccion }}</td>

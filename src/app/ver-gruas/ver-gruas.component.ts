@@ -23,7 +23,7 @@ export class VerGruasComponent {
 
   // Método para obtener las grúas desde el backend
   cargarGruas(): void {
-    this.http.get<any[]>('http://localhost:3000/ver-gruas').subscribe(
+    this.http.get<any[]>('http://localhost:3000/api/gruas/ver-gruas').subscribe(
       (data) => {
         this.gruas = data;
         console.log('Gruas:', this.gruas);
@@ -49,7 +49,7 @@ export class VerGruasComponent {
           </div>
           <div class="mb-3">
             <label for="numeroDeSerie" class="col-form-label">Número de Serie:</label>
-            <input type="text" class="form-control" id="numeroDeSerie" value="${this.gruaseleccionada.numeroDeSerie}" required>
+            <input type="text" class="form-control" id="numeroDeSerie" value="${this.gruaseleccionada.numero_serie}" required>
           </div>
           <div class="mb-3">
             <label for="placa" class="col-form-label">Placa:</label>
@@ -57,7 +57,7 @@ export class VerGruasComponent {
           </div>
           <div class="mb-3">
             <label for="tipoDeGrua" class="col-form-label">Tipo:</label>
-            <input type="text" class="form-control" id="tipoDeGrua" value="${this.gruaseleccionada.tipoDeGrua}" required>
+            <input type="text" class="form-control" id="tipoDeGrua" value="${this.gruaseleccionada.tipo_grua}" required>
           </div>
         </form>
       `,
