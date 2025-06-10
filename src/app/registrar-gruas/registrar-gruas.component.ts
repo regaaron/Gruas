@@ -17,30 +17,55 @@ export class RegistrarGruasComponent {
   numeroDeSerie: string = '';
   placa: string = '';
   tipoDeGrua: string = '';
+  conductores: any[] = [];
+  conductorSeleccionado: number | null = null;
+
+
 
   constructor(private http: HttpClient) {}
 
-  registrarGrua(): void{
-    const grua = {
-      modelo: this.modelo,
-      numeroDeSerie: this.numeroDeSerie,
-      placa: this.placa,
-      tipoDeGrua: this.tipoDeGrua
-    };
-
-    this.http.post('http://localhost:3000/Registrar-Grua',grua).subscribe(
-      (response: any) =>{
-        Swal.fire('Exito',response.message,'success');
-        // Limpiar los campos del formulario
-        this.modelo = '';
-        this.numeroDeSerie = '';
-        this.placa = '';
-        this.tipoDeGrua = '';
-      },
-      (error)=>{
-        Swal.fire('Error','No se pudo registrar la grua','error');
-        console.log(error);
-      }
-    );
+  ngOnInit(): void {
+    this.getConductores();
   }
+
+  getConductores(): void {
+      this.http.get('http://localhost:3000/api/conductores/ver-conductores/').subscribe(
+        (response: any) => {
+          this.conductores = response;
+          console.log(this.conductores);
+        },
+        (error) => {
+          Swal.fire('Error', 'No se pudieron cargar los conductores', 'error');
+          console.error(error);
+        }
+      );
+    }
+
+  registrarGrua(): void {
+  const grua = {
+    modelo: this.modelo,
+    numeroDeSerie: this.numeroDeSerie,
+    placa: this.placa,
+    tipoDeGrua: this.tipoDeGrua,
+    id_conductor: this.conductorSeleccionado  // Envía solo el ID
+  };
+
+  console.log('Datos de la grúa a registrar:', grua);
+  this.http.post('http://localhost:3000/api/gruas/Registrar-Grua/', grua).subscribe(
+    (response: any) => {
+      Swal.fire('Éxito', response.message, 'success');
+      this.modelo = '';
+      this.numeroDeSerie = '';
+      this.placa = '';
+      this.tipoDeGrua = '';
+      this.conductorSeleccionado = null;
+
+    },
+    (error) => {
+      Swal.fire('Error', 'No se pudo registrar la grúa', 'error');
+      console.log(error);
+    }
+  );
+}
+
 }

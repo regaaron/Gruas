@@ -2,7 +2,7 @@
     <h2>Registrar Grúa</h2>
     <form (ngSubmit)="registrarGrua()" #gruaForm="ngForm">
       <div class="input-group">
-        <div>
+        <div class="m-3">
           <label for="modelo">Modelo:</label>
           <input
             class="form-control"
@@ -14,7 +14,7 @@
             required
           />
         </div>
-        <div class="mb-3">
+        <div class="m-3">
           <label for="placa">Placa:</label>
           <input
             class="form-control"
@@ -53,6 +53,25 @@
           required
         />
       </div>
+
+    <div class="mb-3">
+      <label for="conductor">Conductor:</label>
+      <select
+        class="form-select"
+        id="conductor"
+        [(ngModel)]="conductorSeleccionado"
+        name="conductorSeleccionado"
+        required
+      >
+        <option [value]="null" disabled selected>-- Seleccione un conductor --</option>
+        <option *ngFor="let conductor of conductores" [value]="conductor.id_usuario">
+          {{ conductor.nombre }} {{ conductor.apellido }}
+        </option>
+      </select>
+    </div>
+
+
+
       <button type="submit" class="btn btn-success w-100" [disabled]="!gruaForm.valid">Registrar Grúa</button>
     </form>
   </div>
