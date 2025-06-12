@@ -1,39 +1,76 @@
-<google-map
+<div class="map-container">
+ <google-map
   [center]="center"
   [zoom]="zoom"
-  height="500"
-  width="1000"
+  height="500px"
+  width="100%"
   (mapClick)="seleccionarUbicacion($event)"
+  #googleMapRef
 >
+  <!-- Marcadores conductores -->
   <map-marker
-    *ngFor="let conductor of ubicaciones; let i = index"
-    [position]="{ lat: conductor.ubicacion.latitud, lng: conductor.ubicacion.longitud }"
-    [icon]="icon"
+    *ngFor="let conductor of conductores; let i = index"
+    [position]="{ lat: conductor.latitud, lng: conductor.longitud }"
+    [icon]="conductorIcon"
     [label]="conductor.mostrarLabel ? conductor.nombre : ''"
-    (mapClick)="toggleLabel(i)"
+    (mapClick)="toggleLabel(i, 'conductor')"
+  >
+  </map-marker>
+
+  <!-- Marcadores usuarios -->
+  <map-marker
+    *ngFor="let usuario of usuarios; let i = index"
+    [position]="{ lat: usuario.latitud, lng: usuario.longitud }"
+    [icon]="usuarioIcon"
+    [label]="usuario.mostrarLabel ? usuario.nombre : ''"
+    (mapClick)="toggleLabel(i, 'usuario')"
   >
   </map-marker>
 </google-map>
 
-<div #cardContainer class="container mt-5">
-  <h2 class="mb-4">Ubicaciones de los Conductores</h2>
-  <div *ngIf="ubicaciones.length === 0" class="alert alert-info">
-    Cargando ubicaciones...
-  </div>
-  <div *ngIf="ubicaciones.length > 0" class="row">
-    <div *ngFor="let conductor of ubicaciones; let i = index" class="col-md-4 mb-3">
-      <div [id]="'card-' + i" class="card shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h5>
-          <p class="card-text">
-            Teléfono: {{ conductor.telefono }}<br />
-            Email: {{ conductor.email }}<br />
-            Latitud: {{ conductor.ubicacion.latitud }}<br />
-            Longitud: {{ conductor.ubicacion.longitud }}
-          </p>
-         
-        </div>
+</div>
+
+<div class="row" #cardContainer>
+
+  <!-- Sección de Conductores -->
+  <h4 class="mt-3 mb-2">Conductores</h4>
+
+  <div *ngFor="let conductor of conductores; let i = index" class="col-md-4 mb-3">
+    <div [id]="'card-' + i" class="card border-primary shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h5>
+        <p class="card-text">
+          Dirección: {{ conductor.direccion }}<br />
+          Teléfono: {{ conductor.telefono }}<br />
+          Email: {{ conductor.email }}<br />
+          Lat: {{ conductor.latitud }}<br />
+          Lng: {{ conductor.longitud }}
+        </p>
       </div>
     </div>
   </div>
+
+  <!-- Separador -->
+  <div class="col-12">
+    <hr class="my-4" />
+    <h4 class="mb-2">Usuarios</h4>
+  </div>
+
+  <!-- Sección de Usuarios -->
+  <div *ngFor="let usuario of usuarios; let i = index" class="col-md-4 mb-3">
+    <div [id]="'card-usuario-' + i" class="card border-success shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+        <p class="card-text">
+          Dirección: {{ usuario.direccion }}<br />
+          Teléfono: {{ usuario.telefono }}<br />
+          Email: {{ usuario.email }}<br />
+          Lat: {{ usuario.latitud }}<br />
+          Lng: {{ usuario.longitud }}
+        </p>
+      </div>
+    </div>
+  </div>
+
 </div>
+

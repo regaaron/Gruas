@@ -3,21 +3,48 @@
     height: 100%;
     width: 100%;
   }
-  
-  .card {
-    border-radius: 10px;
-    transition: all 0.3s ease;
+.seleccionado {
+  border: 2px solid #ffc107 !important;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.7);
+  background-color: #fffbe6;
+}
+
+.highlight {
+  box-shadow: 0 0 10px 3px #d40303; /* sombra azul brillante */
+  border-color: #a70101 !important; /* borde azul */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.highlight {
+  animation: pulseHighlight 2s ease-in-out 3;
+}
+
+@keyframes pulseHighlight {
+  0%, 100% {
+    box-shadow: 0 0 10px 3px #d40303;
+    border-color: #a70101;
   }
-  
-  .card-title {
-    font-weight: bold;
-    font-size: 1.2rem;
+  50% {
+    box-shadow: 0 0 15px 5px #a70101;
+    border-color: #a70101;
   }
-  
-  /* Resaltar tarjeta al presionar un marcador */
-  .card.highlight {
-    border: 3px solid red; /* Borde azul para resaltar */
-    box-shadow: 0px 4px 15px rgba(224, 24, 24, 0.6); /* Sombra azul */
-    transform: scale(1.05); /* Agrandar ligeramente */
-  }
-  
+}
+
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.3);
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.3);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
