@@ -11,7 +11,7 @@
           (click)="onSelectViaje(viaje)">
           Viaje #{{ viaje.id_viaje }}
           <span class="badge bg-success rounded-pill">
-            {{ (clientes.get(viaje.id_cliente)?.nombre || 'N/A') + '-' + (conductores.get(viaje.id_conductor)?.nombre || 'N/A') }}
+            {{ (clientes[viaje.id_cliente]?.nombre || 'N/A') + '-' + (conductores[viaje.id_conductor]?.nombre || 'N/A') }}
           </span>
         </li>
       </ul>
@@ -27,6 +27,10 @@
         <p><strong>Origen:</strong> {{ origenDireccion }}</p>
         <p><strong>Destino:</strong> {{ destinoDireccion }}</p>
         <p><strong>Distancia:</strong> {{ distancia }}</p>
+        <p><strong>costo neto:</strong> {{ precio_neto }}</p>
+        <p><strong>costo iva:</strong> {{ precio_iva }}</p>
+        <p><strong>costo total:</strong> {{ precio_total }}</p>
+        
       </div>
       
       <!-- Detalles del Viaje -->
@@ -34,9 +38,9 @@
         <h5>Detalles del Viaje</h5>
         <p>
           <strong>Cliente:</strong> 
-          {{ clientes.get(selectedViaje.id_cliente)?.nombre || 'No disponible' }}
+          {{ clientes[selectedViaje.id_cliente]?.nombre || 'No disponible' }}
           <button 
-            *ngIf="clientes.get(selectedViaje.id_cliente)" 
+            *ngIf="clientes[selectedViaje.id_cliente]" 
             class="btn btn-outline-info btn-sm rounded-circle ms-2" 
             (click)="mostrarInfoCliente(selectedViaje.id_cliente)">
             <i class="fas fa-question"></i>
@@ -44,9 +48,9 @@
         </p>
         <p>
           <strong>Conductor:</strong> 
-          {{ conductores.get(selectedViaje.id_conductor)?.nombre || 'No disponible' }}
+          {{ conductores[selectedViaje.id_conductor]?.nombre || 'No disponible' }}
           <button 
-            *ngIf="conductores.get(selectedViaje.id_conductor)" 
+            *ngIf="conductores[selectedViaje.id_conductor]" 
             class="btn btn-outline-info btn-sm rounded-circle ms-2" 
             (click)="mostrarInfoConductor(selectedViaje.id_conductor)">
             <i class="fas fa-question"></i>
@@ -55,7 +59,9 @@
         <p><strong>Tipo de Grúa:</strong> {{ selectedViaje.tipo_grua || 'No disponible' }}</p>
         <p><strong>Modelo de Auto:</strong> {{ selectedViaje.modelo_del_auto || 'No disponible' }}</p>
         <p><strong>Placas:</strong> {{ selectedViaje.placas_cliente || 'No disponible' }}</p>
-        <p><strong>Comentario:</strong> {{ selectedViaje.comentarios || 'sin comentario' }}</p>
+        <p><strong>Comentario cliente:</strong> {{ selectedViaje.comentario_cliente || 'sin comentario' }}</p>
+        <p><strong>Comentario conductor:</strong> {{ selectedViaje.comentario_conductor || 'sin comentario' }}</p>
+
       </div>
 
       <!-- Botón de Reinicio -->

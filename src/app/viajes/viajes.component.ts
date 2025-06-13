@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class ViajesComponent {
   viajes: any[] = [];
-  clientes: Map<number, any> = new Map(); // Map para almacenar clientes por ID
-  conductores: Map<number, any> = new Map(); // Map para almacenar conductores por ID
+  clientes: any[] = [];
+  conductores: any[] = [];
   map!: google.maps.Map;
   origen!: google.maps.LatLng | null;
   destino!: google.maps.LatLng | null;
@@ -24,6 +24,9 @@ export class ViajesComponent {
   directionsService!: google.maps.DirectionsService;
   directionsRenderer!: google.maps.DirectionsRenderer;
   selectedViaje: any | null = null; // Viaje seleccionado actualmente
+  precio_neto: number = 0; // Precio neto del viaje
+  precio_iva: number = 0; // Precio del IVA del viaje
+  precio_total: number = 0; // Precio total del viaje
 
   constructor(private ngZone: NgZone, private http: HttpClient) {}
 
@@ -116,6 +119,7 @@ export class ViajesComponent {
           const leg = route.legs[0];
           this.ngZone.run(() => {
             this.distancia = leg.distance?.text || 'No disponible';
+            
             console.log(`Distancia calculada: ${this.distancia}`);
           });
         } else {
@@ -129,11 +133,14 @@ export class ViajesComponent {
   }
 
   loadData(): void {
-    this.http.get<any[]>('http://localhost:3000/ver-viajes').subscribe(
+    this.http.get<any[]>('http://localhost:3000/api/viajes/ver-viajes').subscribe(
       (viajes) => {
         this.viajes = viajes;
-        this.loadClientes();
-        this.loadConductores();
+        this.getClientes();
+        this.getConductores();
+        console.log('Viajes cargados:', this.viajes);
+        console.log('Clientes cargados:', this.clientes); 
+        console.log('Conductores cargados:', this.conductores);
       },
       (error) => {
         Swal.fire('Error', 'No se pudo cargar los viajes', error);
@@ -143,42 +150,46 @@ export class ViajesComponent {
   }
   
 
-  loadClientes(): void {
-    this.http.get<any[]>('http://localhost:3000/ver-clientes').subscribe(
-      (clientes) => {
-        clientes.forEach(cliente => this.clientes.set(cliente.id, cliente));
-      },
-      (error: any) => {
-        Swal.fire('Error', 'No se pudo cargar los clientes', error);
-        console.error(error);
-      }
-    );
-  }
+   getClientes(): void {
+      this.http.get('http://localhost:3000/api/clientes/usuarios/').subscribe(
+        (response: any) => {
+          this.clientes = response; // Asigna los datos a la variable clientes
+        },
+        (error) => {
+          Swal.fire('Error', 'No se pudieron cargar los clientes', 'error');
+          console.error(error);
+        }
+      );
+    }
+
   
-  loadConductores(): void {
-    this.http.get<any[]>('http://localhost:3000/ver-conductores').subscribe(
-      (conductores) => {
-        conductores.forEach(conductor => this.conductores.set(conductor.id, conductor));
-      },
-      (error: any) => {
-        Swal.fire('Error', 'No se pudo cargar los conductores', error);
-        console.error(error);
-      }
-    );
-  }
+  getConductores(): void {
+      this.http.get('http://localhost:3000/api/conductores/ver-conductores/').subscribe(
+        (response: any) => {
+          this.conductores = response;
+          console.log(this.conductores);
+        },
+        (error) => {
+          Swal.fire('Error', 'No se pudieron cargar los conductores', 'error');
+          console.error(error);
+        }
+      );
+    }
   
 
   onSelectViaje(viaje: any): void {
     this.selectedViaje = viaje;
 
     // Obtener detalles del cliente y conductor
-    const cliente = this.clientes.get(viaje.id_cliente);
-    const conductor = this.conductores.get(viaje.id_conductor);
+    const cliente = this.clientes[viaje.id_cliente];
+    const conductor = this.conductores[viaje.id_conductor];
 
     // Actualizar las direcciones y marcadores
     this.origen = new google.maps.LatLng(viaje.latitud_cliente, viaje.longitud_cliente);
     this.destino = new google.maps.LatLng(viaje.latitud_conductor, viaje.longitud_conductor);
-
+    this.precio_iva = viaje.costo_iva;
+    this.precio_neto = viaje.costo_neutro;
+    this.precio_total =  parseFloat(viaje.costo_neutro) + parseFloat(viaje.costo_iva);
     this.convertirACalleYNumero(this.origen, address => this.origenDireccion = address);
     this.convertirACalleYNumero(this.destino, address => this.destinoDireccion = address);
 
@@ -207,7 +218,7 @@ export class ViajesComponent {
   }
 
   mostrarInfoCliente(idCliente: number): void {
-    const cliente = this.clientes.get(idCliente);
+    const cliente = this.clientes[idCliente];
     if (cliente) {
       Swal.fire({
         title: `${cliente.nombre} ${cliente.apellido}`,
@@ -226,7 +237,7 @@ export class ViajesComponent {
   }
   
   mostrarInfoConductor(idConductor: number): void {
-    const conductor = this.conductores.get(idConductor);
+    const conductor = this.conductores[idConductor];
     if (conductor) {
       Swal.fire({
         title: `${conductor.nombre} ${conductor.apellido}`,
