@@ -1,27 +1,53 @@
-# Gruas
+# 🚗 Gruas
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.3.
+Proyecto universitario para la **gestión de servicios de grúas**, compuesto por una aplicación web y un backend.  
+Este repositorio contiene el **frontend** desarrollado en Angular.  
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📖 Descripción
 
-## Code scaffolding
+El sistema permite a los usuarios solicitar y administrar servicios de grúa, así como a los administradores gestionar choferes, viajes y clientes.  
+La aplicación está pensada como un prototipo similar a Uber, pero enfocado en el servicio de grúas.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🛠️ Tecnologías
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Frontend**: Angular  
+- **Estilos**: Bootstrap 5  
+- **Backend**: Node.js (repositorio separado)  
+- **Base de datos**: MYSQL  
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 🚀 Instalación
 
-## Running end-to-end tests
+1. Clonar el repositorio:  
+   ```bash
+   git clone https://github.com/regaaron/Gruas.git
+2. Instalar dependencias:
+    ```bash
+    npm install
+3. Ejecutar el proyecto en local:
+    ```bash
+    ng serve
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+4. Abrir en el navegador:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  http://localhost:4200
+🔗 Backend
+
+El repositorio del backend se encuentra aquí y la BD:
+👉 Backend Gruas
+ (https://github.com/regaaron/api-gruas2)
+ imagenes de referencias
+![Login](https://github.com/user-attachments/assets/b090d025-dc3e-46c9-a984-faf3a0a0a11c)
+![menu](https://github.com/user-attachments/assets/296f7c43-3550-4b25-a4c5-3b3dc773ea46)
+![conductores](https://github.com/user-attachments/assets/1e1a9e5b-b135-4b80-89fb-a101a889eee0)
+![viajes](https://github.com/user-attachments/assets/3c8510a7-2a92-4528-959a-17e74474626b)
+![viajes2](https://github.com/user-attachments/assets/9b743d94-3032-41ef-a07c-1d97c17515e4)
+![ubicacciones](https://github.com/user-attachments/assets/9e4f7e44-af45-45ec-96c1-e4622739a569)
+
+ 
